@@ -24,10 +24,13 @@ class EventsController < ApplicationController
   end
 
   def new
+    @user = current_user
     @event = Event.new
   end
 
   def create
+    byebug
+    @user = current_user
     @event = current_user.events.build(event_params)
     if @event.save
       User.all.find_each do |user|
@@ -42,10 +45,12 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @user = current_user
   end
 
   def edit
     @event = current_user.events.find(params[:id])
+    @user = current_user
   end
 
   def update
@@ -60,6 +65,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail)
+    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail, :only_woman)
   end
 end
